@@ -24,6 +24,8 @@ if (!semver.valid(version)) {
   throw new Error(`Version ${version} is not valid`);
 }
 
+const isPrerelease = semver.prerelease(version) === null;
+
 // !  lerna.json as the source of truth of a version number
 
 // Create a release branch
@@ -51,9 +53,15 @@ updateString(join(rootDir, 'CHANGELOG.md'), changelog =>
   changelog.replace('### vNEXT', `### vNEXT` + '\n\n' + `### v${version}`),
 );
 
+const publishArgs = ['--access public'];
+
+if (isPrerelease) {
+  publishArgs.push('--tag next');
+}
+
 // Run npm publish in all libraries
 packages.map(dir => {
-  exec(`(cd ${dir} && npm publish --access public)`);
+  exec(`(cd ${dir} && npm publish ${publishArgs.join(' ')})`);
 });
 
 // Revert changes in libraries (back to placeholders)
