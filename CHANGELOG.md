@@ -2,6 +2,8 @@
 
 ### vNEXT
 
+### v1.19.0-alpha.1
+
 ### v1.18.1
 
 - **action**: show more details after file load failed [PR #223](https://github.com/kamilkisiela/graphql-inspector/pull/223)
